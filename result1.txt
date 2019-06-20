@@ -1,0 +1,235 @@
+ # Tìm hiểu cách xây dựng class trong Ruby
+class Person
+	attr_accessor=:fname,:lname ,:age
+	def initialize (first_name, last_name, age)  
+		@fname = first_name  
+		@lname = last_name
+		@age = age  
+
+	end  
+
+	def first_name
+		puts @fname
+	end
+	def last_name
+		puts @lname
+	end
+	def age
+		puts @age
+	end
+end
+t=Person.new("teo", "Nguyen", 18)
+t.first_name
+t.last_name
+t.age
+# Tìm hiểu các loại biến trong Ruby, cách khai báo, cách sử dụng, phạm vi sống của chúng ntn và 
+# chúng khác nhau ra sao
+Biến cục bộ(local variable) là biến được định nghĩa trong phương thức.
+Các biến cục bộ không có sẵn ngoài phương thức.
+Bạn sẽ thấy chi tiết hơn về phương pháp trong chương tiếp theo.
+Các biến cục bộ bắt đầu bằng một chữ cái viết thường hoặc _.
+VD:
+local_variable =  'Ban @@@'
+def variable_scope
+	local_variable = 'Cty Nus Chao Cac Ban 1'
+	puts local_variable
+end
+
+variable_scope
+	puts local_variable
+=> Ban @@@
+   Cty Nus Chao Cac Ban 1	
+Biến Instance có sẵn trên các phương thức cho bất kỳ đối tượng hoặc đối tượng cụ thể nào.
+Điều đó có nghĩa là các biến thể hiện thay đổi từ đối tượng này sang đối tượng khác.
+Các biến sơ thẩm được đi trước bởi dấu tại (@) theo sau là tên biến.
+VD:
+class Nguoi
+	def initialize(ten)
+		@ten= ten
+	end
+
+	def show
+		puts @ten
+	end
+end
+
+first = Nguoi.new( 'Tai' )
+first.show
+second = Nguoi.new( 'Truong' )
+second.show
+=> Tai
+   Truong
+
+Biến lớp(class variale) có sẵn trên các đối tượng khác nhau.
+Một biến lớp thuộc về lớp và là một đặc tính của một lớp.
+Chúng được đặt trước ký hiệu @@ và được theo sau bởi tên biến.
+VD:
+class Dog
+	def initialize(husky)
+		@@husky = husky
+	end
+
+	def show_husky
+		puts @@husky
+	end
+end
+
+first = Dog.new(10)
+first.show_husky
+
+second = Dog.new(20)
+second.show_husky
+
+first.show_husky	
+
+=> 20
+
+Biến toàn cầu(global variale) là biến lớp không có sẵn trên các lớp.
+Nếu bạn muốn có một biến duy nhất, có sẵn trên các lớp,bạn cần xác định một biến toàn cục.
+Các biến toàn cục luôn được đặt trước ký hiệu đô la ($).
+VD:
+$global_variale = ' Hom Nay K Tuyet Voi'
+def variale_scope1
+	 $global_variale = 'That Tuyet Voi '
+	 puts $global_variale	
+end
+variale_scope1
+puts $global_variale
+=> That Tuyet Voi 
+	That Tuyet Voi 
+#Tìm hiểu Ruby có kế thừa không, có override không, có overload không
+-Co Ke Thua(Ruby không cho phép một class đa kế thừa từ nhiều class khác, Ruby dùng cơ chế Mix-in để mix-in các module lại, điều này giúp Ruby giải quyết vấn đề đa kế thừa)
+VD:
+module B
+   def hello
+      puts "Hello from B"
+    end
+end
+
+module C
+    def hello
+      puts   "Hello from C"
+    end
+end
+
+class D
+include B
+include C
+end
+
+D.new.hello 
+=> Hello from C
+
+Ruby co  override
+VD:
+class Rectangle
+  def initialize(length,breadth)
+    @length = length
+    @breadth = breadth
+  end
+  def getArea
+    puts "#{@length*@breadth} is area of rectangle"
+  end
+end
+class Square < Rectangle
+  def initialize(side)
+    super(side,side)
+    @side=side
+  end
+  def getArea
+    puts "#{@side*@side} is area of square"
+  end
+end
+s = Square.new(4)
+r = Rectangle.new(2,4)
+s.getArea
+r.getArea
+=> 16 
+   8
+Ruby khong overload  
+def nhan
+    puts 2*2
+end
+
+def nhan(a,b)
+    puts a*b
+end
+nhan (k goi duoc)
+nhan(4,5) =>20
+
+#Tìm hiểu vấn đề đa kế thừa trong Ruby và cách sử dụng module để giải quyết vấn đề
+Ruby không cho phép một class đa kế thừa từ nhiều class khác, Ruby dùng cơ chế Mix-in để mix-in các module lại, điều này giúp Ruby giải quyết vấn đề đa kế thừa.
+module B
+   def hello
+      puts "Hello from B"
+    end
+end
+
+module C
+    def hello
+      puts   "Hello from C"
+    end
+end
+
+class D
+include C
+include B
+end
+
+D.new.hello 
+=> Hello from B
+
+#Tìm hiểu các tầm vực trong Ruby và điểm khác nhau giữa chúng
+public, protected và private đề cập đến khả năng truy cập của các phương thức.
+Mặc định, tất cả phương thức đều ở trạng thái public. Nếu không chỉ định khả năng truy cập của phương thức, nó sẽ là public.
+Phương thức protected và private không thể truy cập một cách tự do, và do đó khi có một thể hiện của đối tượng, bạn sẽ không thể gọi được các phương thức đó.
+Phương thức protected và private cũng có sự khác biết xung quanh cách bạn có thể sử dụng chúng trong ngữ cảnh của đối tượng.
+VD: public
+class Product
+  attr_accessor :name
+  def initialize(name)
+    @name = name
+  end
+end
+
+iphone= Product.new( "Iphone" )
+puts iphone 
+VD:private
+class Product
+  attr_accessor :name, :quantity
+ 
+  def initialize(name)
+    @name = name
+    @quantity = 1
+  end
+ 
+  def increment
+    @quantity += 1
+  end
+ 
+  private
+    def stock_count
+      100
+    end
+end
+
+milk = Product.new( "Milk" )
+puts milk
+Vd:protected
+class Product
+  attr_accessor :name, :quantity
+ 
+  def initialize(name)
+    @name = name
+    @quantity = 1
+ 
+    puts "The SKU is #{sku}"
+  end
+ 
+  protected
+    def sku
+      name.crypt("yo")
+    end
+end
+milk = Product.new("Milk")
+milk.sku
